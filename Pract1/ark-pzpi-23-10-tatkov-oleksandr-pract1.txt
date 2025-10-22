@@ -430,8 +430,7 @@ Software Development, Principles, Patterns, and Practices) / перекл. з а
 
 В.1 Приклад класу з правильним іменуванням
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V1.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V1.cs
 public class OrderProcessor
 {
     private int _orderCount;       // приватне поле в camelCase з префіксом '_'
@@ -441,8 +440,7 @@ public class OrderProcessor
     }
 }
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V2.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V2.cs
 В.2 Інкапсуляція через властивості
 public class Person
 {
@@ -461,8 +459,7 @@ _name = value;
 
 В.3 Уникнення магічних чисел
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V3.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V3.cs
 
 // Поганий приклад: невідомо, що означає '365' без контексту
 int days = 365;
@@ -473,8 +470,7 @@ int days = DaysPerYear;
 
 В.4 Стиль форматування Allman
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V4.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V4.cs
 public class Calculator
 {
     public int Add(int a, int b)
@@ -490,8 +486,7 @@ public class Calculator
 
 В.5 XML-коментарі для документації
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V5.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V5.cs
 /// <summary>
 /// Клас, що виконує обробку замовлень.
 /// </summary>
@@ -509,8 +504,7 @@ public class OrderProcessor
 
 В.6 Коректна обробка винятків
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V6.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V6.cs
      
 try
 {
@@ -524,8 +518,7 @@ catch (DivideByZeroException ex)
 
 В.7 Принцип єдиної відповідальності
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V7.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V7.cs
 
 public class UserCreator   // відповідає за створення користувачів
 {
@@ -539,24 +532,21 @@ public class UserRepository  // відповідає за збереження �
 
 В.8 Інтерполяція рядків
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V8.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V8.cs
 
 string firstName = "Ivan";
 int age = 30;
 Console.WriteLine($"Name: {firstName}, Age: {age}");
 В.9 Раціональне використання var
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V9.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V9.cs
 
 var numbers = new List<int>(); // тип List<int> очевидний
 // Протилежний приклад (не ясно, який тип повертає GetData()):
 // var data = GetData(); 
 В.10 Асинхронне програмування
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V10.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V10.cs
 
 public async Task<string> DownloadAsync(string url)
 {
@@ -565,8 +555,7 @@ public async Task<string> DownloadAsync(string url)
 }
 В.11 Організація через простори імен
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V11.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V11.cs
 
 namespace MyApp.Models
 {
@@ -580,8 +569,7 @@ namespace MyApp.Services
 
 В.12 Абстракція для тестування
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V12.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V12.cs
 
        public class Order
        {
@@ -592,8 +580,7 @@ pract1/Code/V12.cs
        
 В.13 Джуновський підхід
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V1.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V13.cs
 
 public class OrderService
 {
@@ -613,8 +600,7 @@ public class OrderService
 
 В.14 Сеньйорський підхід
 GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
-tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-
-pract1/Code/V14.cs
+tatkov-oleksandr/blob/main/Pract1/ark-pzpi-23-10-tatkov-oleksandr-pract1/V14.cs
 
 	public interface IDateTimeProvider
 {
