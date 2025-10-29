@@ -16,7 +16,7 @@
 
 практичного завдання дисципліни «Аналіз та рефакторинг коду»
 
-на тему «Методи рефакторингу коду: Replace Array with Object, Remove 
+на тему «Методи рефакторингу коду: Consolidate Conditional Expression, Remove 
 Setting Method, Replace Type Code with Class»
 
 
@@ -586,4 +586,5 @@ null || dbgSource != DbgTarget)))
 
 
 1
+
 
