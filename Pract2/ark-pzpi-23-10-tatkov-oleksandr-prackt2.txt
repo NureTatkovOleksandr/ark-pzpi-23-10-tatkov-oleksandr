@@ -1,0 +1,589 @@
+﻿МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ
+
+
+ХАРКІВСЬКИЙ НАЦІОНАЛЬНИЙ 
+УНІВЕРСИТЕТ РАДІОЕЛЕКТРОНІКИ
+
+Кафедра «Програмна інженерія»
+
+
+
+
+
+
+Звіт до 
+
+
+практичного завдання дисципліни «Аналіз та рефакторинг коду»
+
+на тему «Методи рефакторингу коду: Replace Array with Object, Remove 
+Setting Method, Replace Type Code with Class»
+
+
+
+
+
+
+Виконав:                                                                                   Прийняв:
+
+ст. гр. ПЗПІ-23-10                                                                    ст. викл Сокорчук І.П
+
+Татьков О.С
+
+
+
+
+
+
+
+
+Харків 2025
+1.Історія змін.
+
+№
+Дата
+Версія звіту
+Опис змін та 
+виправлень
+1
+24.10.2025
+0.1
+Створення 
+титульної 
+сторінки звіту, 
+мети роботи.
+2
+29.10.2025
+0.2
+Опис першого 
+методу, пошук 
+прикладу.
+3
+2.11.2025
+0.3
+Опис другого 
+методу, пошук 
+прикладу.
+4
+4.11.2025
+0.4
+Опис третього 
+методу, пошук 
+прикладу, 
+написання 
+висновків
+5
+5.11.2025
+0.5
+Створення 
+додатків.
+
+2.Мета роботи
+
+	Рефакторинг — це процес вдосконалення існуючого коду без зміни 
+його зовнішньої поведінки, і він є фундаментальним для створення якісного 
+програмного забезпечення. Як зазначає Роберт С. Мартін у своїй книзі 
+"Чистий код: Посібник з гнучкої розробки ПЗ", чистий код — це не лише код, 
+що працює, а той, що легко читається, розуміється та розширюється, 
+зменшуючи технічний борг і полегшуючи співпрацю в команді. Ці принципи 
+лежать в основі сучасної розробки, і ми зосередимося на трьох потужних 
+методах рефакторингу: Consolidate Conditional Expression (Об'єднання 
+умовних виразів), Remove Setting Method (Видалення методу встановлення) та 
+Replace Type Code with Class (Заміна коду типу класом). Ми розглянемо 
+мотивацію для кожного методу, приклади, а також переваги, які вони 
+приносять у реальних проєктах.
+
+     						
+3.Хід роботи
+
+      	У цій роботі ми зосередимося на трьох потужних методах 
+рефакторингу: Consolidate Conditional Expression (Об'єднання умовних 
+виразів), Remove Setting Method (Видалення методу встановлення) та Replace 
+Type Code with Class (Заміна коду типу класом). Ці техніки допомагають 
+боротися з "запахами коду" – такими як магічні числа, надмірна 
+мутабельність чи відсутність структури в даних – і роблять ваш код більш 
+об'єктно-орієнтованим та безпечним. Ми розглянемо мотивацію для кожного 
+методу, приклади, а також переваги, які вони приносять у реальних проєктах.
+      Метод рефакторингу Replace Type Code with Class полягає в заміні 
+примітивного "коду типу", такого як int або string, на повноцінний клас. Цей 
+метод застосовується, коли код типу несе певну семантику, але не має власної 
+поведінки, що часто призводить до появи "магічних чисел" та розкиданої по 
+коду логіки. Замість цього статичні значення перетворюються на об'єкти з 
+методами, що забезпечує кращу типобезпеку та розширюваність.  Розглянемо 
+це на прикладі з мого проєкту а саме на методі AddLog стркутури Logger 
+[додаток В.1]. Після додавання класу LogLevel метод AddLog змінився, 
+замінивши int-тип msgType (1=ERROR, 2=WARNING, 3=INFO) на об'єкти 
+класу (LogLevel.Info тощо). Логіка для кольору, типу ("ERR" тощо) та рівня 
+тепер інкапсульована в методах класу, зменшивши умовні оператори з шести 
+рядків до трьох викликів [додаток В.2]. Параметр msgType став LogLevel 
+(дефолт Info), перевірка символів залишилася для override. Нові можливості: 
+розширюваність — додавання рівнів (наприклад, DEBUG) без змін у методі; 
+додаткова поведінка; типобезпека (компілятор перевіряє тип) та 
+самодокументованість (без коментарів про числа) [додаток В.3]. Вирішені 
+проблеми: усунення "магічних чисел" (1-3), що зменшує помилки при 
+розширенні; централізація логіки, зменшення дублікації; покращення 
+читабельності — замість повторюваних перевірок декларативні виклики.
+      Метод рефакторингу Remove Setting Method полягає в видаленні 
+методу-сеттера для поля, яке встановлюється лише один раз (зазвичай у 
+конструкторі) і не повинно змінюватися після створення об'єкта. Цей метод 
+застосовується, коли наявність сеттера робить об'єкт мутабельним без 
+реальної потреби, що може призводити до несподіваних змін стану, помилок 
+або ускладнень у багатопотокових середовищах. Замість цього значення поля 
+передається безпосередньо в конструктор, забезпечуючи принцип незмінності 
+(immutability) та спрощення інтерфейсу класу. Мотивація для використання 
+цього методу включає покращення безпеки коду шляхом запобігання 
+випадковим модифікаціям, спрощення дизайну за рахунок видалення 
+непотрібних методів, а також підтримку thread-safety у паралельних системах, 
+де незмінні об'єкти зменшують ризики конкурентного доступу. Розглянемо на 
+прикладі классу Var [додаток В.4].Після застосування рефакторингу Remove 
+Setting Method клас Var змінився, видаливши setters для властивостей (Name, 
+Value, PossibleCsType, IsCore) та додавши конструктор для ініціалізації всіх 
+полів. Логіка встановлення значень тепер інкапсульована в конструкторі, 
+роблячи об'єкти immutable (незмінними) після створення, з використанням 
+readonly для підкреслення стабільності [додаток В.5]. Параметри 
+конструктора стали обов'язковими для name та value (з дефолтними 
+значеннями для possibleCsType та isCore), перевірка на null залишилася для 
+коректної ініціалізації. Нові можливості: незмінність об'єктів — уникнення 
+модифікацій після створення для кращої передбачуваності; thread-safety у 
+багатопотоковому середовищі; розширюваність — додавання нових полів без 
+ризику мутацій; самодокументованість (конструктор явно вказує на необхідні 
+параметри). Вирішені проблеми: усунення мутабельності, що зменшує 
+помилки від несподіваних змін; централізація ініціалізації, зменшення 
+дублікації валідації; покращення читабельності — замість розкиданих setters 
+декларативний конструктор для всіх властивостей.
+      Метод рефакторингу Consolidate Conditional Expression полягає в 
+об'єднанні кількох умовних перевірок, які призводять до одного й того ж 
+результату, в єдине умовне вираження. Цей метод застосовується, коли в коді 
+є серія подібних умов (наприклад, кілька if-запитів з однаковим тілом), що 
+робить код розкиданим, важким для розуміння та схильним до дублікації 
+логіки, особливо якщо умови пов'язані логічними операторами. Замість цього 
+умови комбінуються в один складений вираз (використовуючи &&, || тощо), а 
+потім цей вираз може бути витягнутий у окремий метод для кращої 
+читабельності. Мотивація для використання цього методу включає спрощення 
+коду шляхом зменшення дублікації, покращення розуміння логіки (один 
+вираз легше аналізувати, ніж кілька розкиданих), а також полегшення 
+подальшого рефакторингу, наприклад, для витягнення методу чи додавання 
+нових умов без повторення коду. Для прикладу візьмемо метод AddDbgLog з 
+тієї ж структури Logger [додаток В.6]. Після застосування рефакторингу 
+Consolidate Conditional Expression метод AddDbgLog змінився, об'єднавши 
+кілька окремих умовних перевірок (на null для caller, file та фільтрацію 
+dbgSource) в один вираз з логічними операторами (||), що призводять до 
+раннього повернення [додаток В.7].  Логіка для ігнорування логування тепер 
+централізована в єдиному if, зменшивши кількість умовних блоків з чотирьох 
+(або більше) до одного компактного виразу. Параметри caller і file стали 
+nullable з перевіркою на null, інтегрованою в загальну умову, без змін у решті 
+методу. Нові можливості: розширюваність — додавання нових перевірок 
+(наприклад, на інші параметри) просто в вираз без дублювання return; 
+полегшення підтримки — легше читати та модифікувати логіку в одному 
+місці; зменшення ризику помилок при рефакторингу. Вирішені проблеми: 
+усунення дублювання коду (кілька ідентичних return), що зменшує помилки 
+при розширенні; централізація умов, зменшення візуального шуму; 
+покращення читабельності — замість розкиданих if декларативний вираз для 
+всіх "поганих" випадків.
+
+ 
+4. Висновки
+
+     Ці три методи рефакторингу – Replace Type Code with Class, Remove 
+Setting Method та Consolidate Conditional Expression – є потужними 
+інструментами для покращення якості коду в реальних проєктах. Вони 
+допомагають усунути поширені проблеми, такі як магічні числа, непотрібна 
+мутабельність та дублікація логіки, роблячи код більш структурованим, 
+безпечним і легким у підтримці. Застосування цих технік сприяє кращій 
+типобезпеці, розширюваності та читабельності, а також полегшує роботу в 
+багатопотокових середовищах. У підсумку, регулярний рефакторинг з 
+використанням таких методів не тільки зменшує ризик помилок, але й 
+підвищує загальну ефективність розробки, дозволяючи командам 
+фокусуватися на нових функціях, а не на боротьбі з legacy-кодом. 
+Рекомендується інтегрувати їх у щоденну практику для досягнення чистого та 
+елегантного дизайну програмного забезпечення.
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+     
+
+5. Список використаних джерел
+
+
+1.	Catalog of Refactorings. Refactoring.com. URL: 
+https://refactoring.com/catalog/ (дата звернення: 27.10.2025).
+2.	Refactoring Techniques. Refactoring.guru. URL: 
+https://refactoring.guru/refactoring/techniques (дата звернення: 27.10.2025).  
+Changes for the 2nd Edition of Refactoring. Martin Fowler. URL: 
+https://martinfowler.com/articles/refactoring-2nd-changes.html (дата 
+звернення: 27.10.2025).  
+3.	Refactoring-Summary. GitHub. URL: 
+https://github.com/HugoMatilla/Refactoring-Summary (дата звернення: 
+27.10.2025).
+4.	Refactoring.Improving.the.Design.of.Existing.Code.2nd.edition [PDF]. URL: 
+https://dl.ebooksworld.ir/motoman/Refactoring.Improving.the.Design.of.Existi
+ng.Code.2nd.edition.www.EBooksWorld.ir.pdf (дата звернення: 27.10.2025).  
+5.	Refactoring: Improving the Design of Existing Code [PDF]. Pearsoncmg.com. 
+URL:https://ptgmedia.pearsoncmg.com/images/9780201485677/samplepages/9
+780201485677.pdf (дата звернення: 27.10.2025).  
+6.	Refactoring [PDF]. University of Colorado Boulder. URL: 
+https://home.cs.colorado.edu/~kena/classes/5448/f12/lectures/28-
+refactoring.pdf (дата звернення: 27.10.2025).
+7.	Notes on Refactoring by Martin Fowler. GitHub Gist. URL: 
+https://gist.github.com/cs-cordero/3799f26699bdecdb286fd719f08122af (дата 
+звернення: 27.10.2025).  
+8.	Book Review: Is Martin Fowler’s “Refactoring” still relevant? Medium. URL: 
+https://forsethingvild.medium.com/book-review-is-martin-fowlers-refactoring-
+still-relevant-d724c146f774 (дата звернення: 27.10.2025).
+9.	Replace Nested Conditional with Guard Clauses. Refactoring.com. URL: 
+https://refactoring.com/catalog/replaceNestedConditionalWithGuardClauses.ht
+ml (дата звернення: 27.10.2025).
+
+6. Додаток А
+     
+     Посилання на відеоролик на YouTube: 
+https://www.youtube.com/watch?v=v_FHmxqHczE
+     
+     Хронологічний опис відеозапису:
+     
+     00:00 - Вступ.
+     00:38 - Пояснення суті методу рефакотрингу Replace Type Code with 
+Class.
+     00:56 - Приклад на якому розглядається метод(Replace Type Code with 
+Class).
+     01:47 - Поясненя отриманих переваг (Replace Type Code with Class). 
+02:21 - Пояснення суті методу рефакотрингу Remove Setting Method
+      03:10 - Приклад на якому розглядається метод(Remove Setting Method).
+     03:49 - Поясненя отриманих переваг (Remove Setting Method).
+     04:55 - Пояснення суті методу рефакотрингу Consolidate Conditional 
+Expression.
+     05:36 - Приклад на якому розглядається метод (Consolidate Conditional 
+Expression).
+     05:57 - Поясненя отриманих переваг (Consolidate Conditional 
+Expression).
+     06:21 - Невеликий висновок.
+     
+     
+     
+     
+     
+     
+     
+ 
+7. Додаток Б
+Перелік слайдів презентації
+
+ 
+Рисунок Б.1 – Титульний аркуш.
+
+ 
+Рисунок Б.2 – Вступ.
+
+ 
+Рисунок Б.3 – Метод рефакторингу: Replace Type Code with Class. Пояснення 
+суті методу.
+
+ 
+Рисунок Б.4 – Метод рефакторингу: Replace Type Code with Class. Приклад 
+коду до та після застосування методу.
+
+
+ 
+Рисунок Б.5 – Метод рефакторингу: Replace Type Code with Class. Пояснення 
+переваг методу.
+
+ 
+Рисунок Б.6 – Метод рефакторингу: Remove Setting Method. Пояснення суті 
+методу.
+
+
+ 
+Рисунок Б.7 – Метод рефакторингу: Remove Setting Method. Приклад коду до 
+та після застосування методу.
+
+ 
+Рисунок Б.8 – Метод рефакторингу: Remove Setting Method. Пояснення 
+переваг методу
+
+
+ 
+Рисунок Б.9 – Метод рефакторингу: Consolidate Conditional Expression. 
+Пояснення суті методу.
+
+ 
+Рисунок Б.10 – Метод рефакторингу: Consolidate Conditional Expression. 
+Приклад коду до та після застосування методу.
+
+
+
+ 
+Рисунок Б.11 – Метод рефакторингу: Consolidate Conditional Expression. 
+Пояснення переваг методу.
+
+ 
+Рисунок Б.12 – Перелік використаних джерел.
+
+
+
+
+8. Додаток В
+Програмний код
+
+В.1 AddLog до застосування методу Replace Type Code with Class.
+GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
+tatkov-oleksandr/blob/main/Pract2/ark-pzpi-23-10-tatkov-oleksandr-
+pract2/code_examples.cs
+
+public static async Task AddLog(
+    string message,
+    int msgType = 0,
+    [CallerMemberName] string caller = "",
+    [CallerFilePath] string file = "",
+    [CallerLineNumber] int line = 0)
+{
+    msgType ??= LogLevel.Info;
+
+          
+    ConsoleColor color = msgType == LogLevel.ERROR ? ConsoleColor.Red :
+                        msgType == LogLevel.WARNING ? ConsoleColor.Yellow :
+                        ConsoleColor.White;
+
+    string type = msgType == LogLevel.ERROR ? "ERR" :
+                  msgType == LogLevel.WARNING ? "WAR" : "INF";
+
+    int level = msgType == LogLevel.ERROR ? 1 :
+      msgType == LogLevel.WARNING ? 2 : 3;
+
+    if (message.Contains(WarnSymbol))
+    {
+        color = ConsoleColor.Yellow;
+        type = "WAR";
+    }
+    if (message.Contains(ErrorSymbol))
+    {
+        color = ConsoleColor.Red;
+        type = "ERR";
+    }
+    await AddLog(message, color, level, type, caller, file, line);
+}
+
+
+В.2 AddLog після застосування методу Replace Type Code with Class.
+GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
+tatkov-oleksandr/blob/main/Pract2/ark-pzpi-23-10-tatkov-oleksandr-
+pract2/code_examples.cs
+
+public static async Task AddLog(
+    string message,
+    LogLevel msgType = null,
+    [CallerMemberName] string caller = "",
+    [CallerFilePath] string file = "",
+    [CallerLineNumber] int line = 0)
+{
+    msgType ??= LogLevel.Info;
+
+    ConsoleColor color = msgType.GetColor();
+    string type = msgType.GetTypeString();
+    int level = msgType.GetValue();
+
+    if (message.Contains(WarnSymbol))
+    {
+        color = ConsoleColor.Yellow;
+        type = "WAR";
+    }
+    if (message.Contains(ErrorSymbol))
+    {
+        color = ConsoleColor.Red;
+        type = "ERR";
+    }
+    await AddLog(message, color, level, type, caller, file, line);
+}
+
+В.3 Класс утворений в результаті застосування методу Replace Type Code with 
+Class.
+GitHub репозиторій:
+
+public class LogLevel
+{
+    public static readonly LogLevel Info = new LogLevel(3, "INF", 
+ConsoleColor.White);
+    public static readonly LogLevel Warning = new LogLevel(2, "WAR", 
+ConsoleColor.Yellow);
+    public static readonly LogLevel Error = new LogLevel(1, "ERR", 
+ConsoleColor.Red);
+
+    private readonly int _value;
+    private readonly string _typeString;
+    private readonly ConsoleColor _color;
+
+    private LogLevel(int value, string typeString, ConsoleColor color)
+    {
+        _value = value;
+        _typeString = typeString;
+        _color = color;
+    }
+
+    public int GetValue() => _value;
+    public string GetTypeString() => _typeString;
+    public ConsoleColor GetColor() => _color;
+
+    public bool IsError() => this == Error;
+    public bool ShouldLog(int loggingLevel) => _value <= loggingLevel;
+}
+
+
+В.4 Класс Var до застосування методу Remove Setting Method.
+GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
+tatkov-oleksandr/blob/main/Pract2/ark-pzpi-23-10-tatkov-oleksandr-
+pract2/code_examples.cs
+
+public class Var
+{
+    public string Name { get; set; } = string.Empty;
+
+    public object? Value
+    {
+        get => _value ?? DDF.Null;
+        set => _value = value;
+    }
+
+    private object? _value;
+    public Type? PossibleCsType { get; set; }
+    public bool IsCore { get; set; } = false;
+} 
+
+В.5 Класс Var після застосування методу Remove Setting Method.
+GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
+tatkov-oleksandr/blob/main/Pract2/ark-pzpi-23-10-tatkov-oleksandr-
+pract2/code_examples.cs
+
+public class Var
+{
+    public string Name { get; }
+
+    public object? Value { get; }
+
+    public Type? PossibleCsType { get; }
+    public bool IsCore { get; }
+
+    public Var(string name, object? value, Type? possibleCsType = null, 
+bool isCore = false)
+    {
+        Name = name ?? string.Empty;
+        Value = value ?? DDF.Null;
+        PossibleCsType = possibleCsType;
+        IsCore = isCore;
+    }
+}
+
+В.6 Метод AddDbgLog до застосуваняя Consolidate Conditional Expression.
+GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
+tatkov-oleksandr/blob/main/Pract2/ark-pzpi-23-10-tatkov-oleksandr-
+pract2/code_examples.cs
+     
+public static async Task AddDbgLog(
+    string message,
+    string dbgSource = null,  // По умолчанию null, если не передан - 
+игнорируем фильтрацию
+    LogLevel msgType = null,
+    [CallerMemberName] string? caller = null,
+    [CallerFilePath] string? file = null,
+    [CallerLineNumber] int line = 0)
+{
+    if (!IsDebug)
+    {
+        return;
+    }
+
+    if (caller == null)
+    {
+        return;
+    }
+
+    if (file == null)
+    {
+        return;
+    }
+
+    if (DbgTarget != null && dbgSource == null)
+    {
+        return;
+    }
+
+    if (DbgTarget != null && dbgSource != DbgTarget)
+    {
+        return;
+    }
+
+    msgType ??= LogLevel.Info;
+
+    ConsoleColor color = msgType.GetColor();
+    string type = msgType.GetTypeString();
+    int level = msgType.GetValue();
+
+    if (message.Contains(WarnSymbol))
+    {
+        color = ConsoleColor.Yellow;
+        type = "WAR";
+    }
+    if (message.Contains(ErrorSymbol))
+    {
+        color = ConsoleColor.Red;
+        type = "ERR";
+    }
+    await AddLog(message, color, level, type, caller, file, line);
+}
+В.7 Метод AddDbgLog після застосування Consolidate Conditional Expression. 
+GitHub репозиторій: https://github.com/NureTatkovOleksandr/ark-pzpi-23-10-
+tatkov-oleksandr/blob/main/Pract2/ark-pzpi-23-10-tatkov-oleksandr-
+pract2/code_examples.cs
+
+public static async Task AddDbgLog(
+    string message,
+    string dbgSource = null,  // По умолчанию null, если не передан - 
+игнорируем фильтрацию
+    LogLevel msgType = null,
+    [CallerMemberName] string? caller = null,
+    [CallerFilePath] string? file = null,
+    [CallerLineNumber] int line = 0)
+{
+    if (!IsDebug)
+    {
+        return;
+    }
+
+    if (caller == null || file == null || (DbgTarget != null && (dbgSource == 
+null || dbgSource != DbgTarget)))
+    {
+        return;
+    }
+
+    msgType ??= LogLevel.Info;
+
+    ConsoleColor color = msgType.GetColor();
+    string type = msgType.GetTypeString();
+    int level = msgType.GetValue();
+
+    if (message.Contains(WarnSymbol))
+    {
+        color = ConsoleColor.Yellow;
+        type = "WAR";
+    }
+    if (message.Contains(ErrorSymbol))
+    {
+        color = ConsoleColor.Red;
+        type = "ERR";
+    }
+    await AddLog(message, color, level, type, caller, file, line);
+} 
+
+
+
+1
+
